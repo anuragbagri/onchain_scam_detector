@@ -1,0 +1,78 @@
+/* ── Metadata Panel Component ──────────────────────────────────── */
+.panel {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(16px);
+  overflow: hidden;
+  animation: fadeInUp 0.4s ease both;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 20px;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.panelIcon {
+  font-size: 1.1rem;
+}
+
+.panelTitle {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0;
+}
+
+.item {
+  padding: 14px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-right: 1px solid rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  transition: background var(--transition-fast);
+}
+
+.item:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.itemLabel {
+  font-size: 0.68rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.itemValue {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  font-family: 'Inter', monospace;
+}
+
+.safe {
+  color: var(--color-risk-low);
+}
+
+.danger {
+  color: var(--color-risk-high);
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

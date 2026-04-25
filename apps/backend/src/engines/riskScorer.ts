@@ -81,6 +81,31 @@ export function computeRiskScore(input: ScoringInput): AnalysisResult {
   const overallLevel = computeOverallLevel(overallScore);
   const summary = generateSummary(overallScore, overallLevel, rugPull, fakeVolume, suspiciousWallet, mode, knownAddress);
 
+  // Build metadata info for frontend display
+  const tokenInfo = tokenMetadata
+    ? {
+        mintAddress: tokenMetadata.mintAddress,
+        supply: tokenMetadata.supply,
+        decimals: tokenMetadata.decimals,
+        mintAuthorityRevoked: tokenMetadata.mintAuthorityRevoked,
+        freezeAuthorityRevoked: tokenMetadata.freezeAuthorityRevoked,
+        estimatedAgeDays: tokenMetadata.estimatedAgeHours
+          ? tokenMetadata.estimatedAgeHours / 24
+          : null,
+        knownName: knownAddress?.name,
+      }
+    : undefined;
+
+  const walletInfo = {
+    balanceSOL: walletData.balanceSOL,
+    tokenCount: walletData.tokenAccounts.length,
+    transactionCount: signatures.length,
+    estimatedAgeDays: walletData.estimatedAgeHours
+      ? walletData.estimatedAgeHours / 24
+      : null,
+    knownName: knownAddress?.name,
+  };
+
   return {
     address,
     mode,
@@ -92,6 +117,8 @@ export function computeRiskScore(input: ScoringInput): AnalysisResult {
       fakeVolume,
       suspiciousWallet,
     },
+    tokenInfo,
+    walletInfo,
     analyzedAt: new Date().toISOString(),
   };
 }

@@ -8,6 +8,8 @@ import RiskGauge from './components/RiskGauge';
 import CategoryCard from './components/CategoryCard';
 import AnalysisProgress from './components/AnalysisProgress';
 import HistorySidebar from './components/HistorySidebar';
+import MetadataPanel from './components/MetadataPanel';
+import ShareReport from './components/ShareReport';
 import styles from './page.module.css';
 
 // Example addresses for quick demo
@@ -225,6 +227,13 @@ export default function HomePage() {
               {result.summary}
             </div>
 
+            {/* Token/Wallet Metadata */}
+            <MetadataPanel
+              tokenInfo={result.tokenInfo}
+              walletInfo={result.walletInfo}
+              mode={result.mode}
+            />
+
             <div className={styles.scoreAndCategories}>
               {/* Risk Gauge */}
               <RiskGauge score={result.overallScore} level={result.overallLevel} />
@@ -247,6 +256,9 @@ export default function HomePage() {
                 New Analysis
               </button>
             </div>
+
+            {/* Share/Export */}
+            <ShareReport result={result} />
 
             <p className={styles.disclaimer}>
               ⚠️ This is a heuristic-based analysis tool. Not financial advice.

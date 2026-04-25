@@ -15,6 +15,24 @@ export interface CategoryScore {
   signals: RiskSignal[];
 }
 
+export interface TokenInfo {
+  mintAddress: string;
+  supply: number;
+  decimals: number;
+  mintAuthorityRevoked: boolean;
+  freezeAuthorityRevoked: boolean;
+  estimatedAgeDays: number | null;
+  knownName?: string;
+}
+
+export interface WalletInfo {
+  balanceSOL: number;
+  tokenCount: number;
+  transactionCount: number;
+  estimatedAgeDays: number | null;
+  knownName?: string;
+}
+
 export interface AnalysisResult {
   address: string;
   mode: AnalysisMode;
@@ -26,5 +44,7 @@ export interface AnalysisResult {
     fakeVolume: CategoryScore;
     suspiciousWallet: CategoryScore;
   };
+  tokenInfo?: TokenInfo;
+  walletInfo?: WalletInfo;
   analyzedAt: string;
 }
