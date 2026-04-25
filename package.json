@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "name": "onchain-scam-detector-root",
+  "scripts": {
+    "dev": "concurrently \"pnpm --filter @backend/app dev\" \"pnpm --filter frontend dev\"",
+    "build": "pnpm -r build",
+    "install:all": "pnpm install"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
