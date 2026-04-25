@@ -1,0 +1,115 @@
+/* ── Risk Gauge Component ──────────────────────────────────────── */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 20px;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-card);
+  animation: scaleIn 0.5s ease;
+}
+
+.gaugeWrapper {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin-bottom: 16px;
+}
+
+.gaugeSvg {
+  width: 200px;
+  height: 200px;
+  transform: rotate(-90deg);
+}
+
+.gaugeTrack {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.05);
+  stroke-width: 12;
+  stroke-linecap: round;
+}
+
+.gaugeFill {
+  fill: none;
+  stroke-width: 12;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1),
+              stroke 0.5s ease;
+  filter: drop-shadow(0 0 8px var(--gauge-color, rgba(20, 241, 149, 0.5)));
+}
+
+.scoreDisplay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.scoreValue {
+  font-size: 3.5rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  transition: color 0.5s ease;
+}
+
+.scoreLabel {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.riskBadge {
+  padding: 6px 20px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border: 1px solid;
+}
+
+.riskBadge.low {
+  background: rgba(20, 241, 149, 0.1);
+  color: var(--color-risk-low);
+  border-color: rgba(20, 241, 149, 0.3);
+}
+
+.riskBadge.medium {
+  background: rgba(240, 180, 41, 0.1);
+  color: var(--color-risk-medium);
+  border-color: rgba(240, 180, 41, 0.3);
+}
+
+.riskBadge.high {
+  background: rgba(255, 71, 87, 0.1);
+  color: var(--color-risk-high);
+  border-color: rgba(255, 71, 87, 0.3);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 24px 16px;
+  }
+
+  .gaugeWrapper {
+    width: 160px;
+    height: 160px;
+  }
+
+  .gaugeSvg {
+    width: 160px;
+    height: 160px;
+  }
+
+  .scoreValue {
+    font-size: 2.5rem;
+  }
+}

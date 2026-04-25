@@ -1,0 +1,136 @@
+/* ── Search Input Component ─────────────────────────────────────── */
+.container {
+  animation: fadeInUp 0.5s ease 0.15s both;
+}
+
+.modeToggle {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin-bottom: 12px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.modeBtn {
+  padding: 8px 20px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  background: transparent;
+  color: var(--color-text-muted);
+}
+
+.modeBtn:hover {
+  color: var(--color-text-secondary);
+}
+
+.modeBtnActive {
+  background: var(--color-accent);
+  color: white;
+  box-shadow: 0 2px 8px rgba(153, 69, 255, 0.3);
+}
+
+.inputRow {
+  display: flex;
+  gap: 0;
+  background: var(--color-bg-input);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-base);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.inputRow:focus-within {
+  border-color: var(--color-border-focus);
+  box-shadow: var(--shadow-card), var(--shadow-glow-purple);
+}
+
+.input {
+  flex: 1;
+  padding: 16px 20px;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 0.95rem;
+  font-family: 'Inter', monospace;
+  color: var(--color-text-primary);
+  letter-spacing: 0.01em;
+}
+
+.input::placeholder {
+  color: var(--color-text-muted);
+  font-family: 'Inter', sans-serif;
+}
+
+.pasteBtn {
+  padding: 16px 16px;
+  background: transparent;
+  border: none;
+  border-left: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.pasteBtn:hover {
+  color: var(--color-accent);
+  background: rgba(153, 69, 255, 0.05);
+}
+
+.analyzeBtn {
+  padding: 16px 28px;
+  background: var(--gradient-solana);
+  background-size: 200% auto;
+  border: none;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+.analyzeBtn:hover:not(:disabled) {
+  background-position: right center;
+  box-shadow: 0 4px 16px rgba(153, 69, 255, 0.3);
+}
+
+.analyzeBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.analyzeBtnLoading {
+  animation: pulse 1.5s ease infinite;
+}
+
+@media (max-width: 768px) {
+  .inputRow {
+    flex-direction: column;
+  }
+
+  .pasteBtn {
+    border-left: none;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .analyzeBtn {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}

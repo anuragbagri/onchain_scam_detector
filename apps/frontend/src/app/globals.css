@@ -1,0 +1,193 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+/* ── Design Tokens ─────────────────────────────────────────────── */
+:root {
+  /* Solana-inspired palette */
+  --color-bg-primary: #0a0a12;
+  --color-bg-secondary: #12121f;
+  --color-bg-card: rgba(20, 20, 40, 0.7);
+  --color-bg-card-hover: rgba(30, 30, 55, 0.8);
+  --color-bg-input: rgba(20, 20, 40, 0.9);
+
+  --color-border: rgba(120, 100, 255, 0.15);
+  --color-border-hover: rgba(120, 100, 255, 0.3);
+  --color-border-focus: rgba(120, 100, 255, 0.6);
+
+  /* Brand gradient */
+  --gradient-solana: linear-gradient(135deg, #9945ff, #14f195);
+  --gradient-hero: linear-gradient(135deg, #9945ff 0%, #6c5ce7 30%, #00b4d8 70%, #14f195 100%);
+  --gradient-glow: radial-gradient(ellipse at 50% 0%, rgba(153, 69, 255, 0.15) 0%, transparent 60%);
+
+  /* Risk colors */
+  --color-risk-low: #14f195;
+  --color-risk-medium: #f0b429;
+  --color-risk-high: #ff4757;
+
+  /* Text */
+  --color-text-primary: #f0f0f8;
+  --color-text-secondary: #8888a8;
+  --color-text-muted: #555570;
+
+  /* Accent */
+  --color-accent: #9945ff;
+  --color-accent-secondary: #14f195;
+
+  /* Shadows */
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-glow-purple: 0 0 30px rgba(153, 69, 255, 0.15);
+  --shadow-glow-green: 0 0 30px rgba(20, 241, 149, 0.1);
+
+  /* Spacing */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Reset & Base ──────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  min-height: 100vh;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Animated gradient background */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--gradient-glow);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Animated floating orb for visual depth */
+body::after {
+  content: '';
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(20, 241, 149, 0.06) 0%, rgba(153, 69, 255, 0.04) 50%, transparent 70%);
+  top: 40%;
+  right: -200px;
+  pointer-events: none;
+  z-index: 0;
+  animation: floatOrb 20s ease-in-out infinite;
+}
+
+@keyframes floatOrb {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(-100px, -80px) scale(1.1); }
+  50% { transform: translate(-50px, 60px) scale(0.95); }
+  75% { transform: translate(30px, -40px) scale(1.05); }
+}
+
+/* ── Typography ────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-accent-secondary);
+}
+
+/* ── Utility Animations ────────────────────────────────────────── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ── Scrollbar ─────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(153, 69, 255, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(153, 69, 255, 0.5);
+}
