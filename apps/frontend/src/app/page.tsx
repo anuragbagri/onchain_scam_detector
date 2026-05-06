@@ -10,6 +10,7 @@ import AnalysisProgress from './components/AnalysisProgress';
 import HistorySidebar from './components/HistorySidebar';
 import MetadataPanel from './components/MetadataPanel';
 import ShareReport from './components/ShareReport';
+import MLInsightCard from './components/MLInsightCard';
 import styles from './page.module.css';
 
 // Example addresses for quick demo
@@ -243,8 +244,29 @@ export default function HomePage() {
                 <CategoryCard category={result.categories.rugPull} icon="💣" />
                 <CategoryCard category={result.categories.fakeVolume} icon="📊" />
                 <CategoryCard category={result.categories.suspiciousWallet} icon="👤" />
+                <CategoryCard category={result.categories.lpHealth} icon="🔗" />
+                <CategoryCard category={result.categories.clusterRisk} icon="🕸️" />
               </div>
             </div>
+
+            {/* ML Insight */}
+            <MLInsightCard mlInsight={result.mlInsight} />
+
+            {/* Confidence indicator */}
+            {result.confidence !== undefined && (
+              <div className={styles.confidenceRow}>
+                <span className={styles.confidenceLabel}>Data Quality:</span>
+                <div className={styles.confidenceBar}>
+                  <div
+                    className={styles.confidenceFill}
+                    style={{ width: `${Math.round(result.confidence * 100)}%` }}
+                  />
+                </div>
+                <span className={styles.confidenceValue}>
+                  {Math.round(result.confidence * 100)}%
+                </span>
+              </div>
+            )}
 
             {/* Analyzed timestamp */}
             <div className={styles.metaRow}>

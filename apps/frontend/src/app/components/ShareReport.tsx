@@ -31,6 +31,8 @@ function generateTextReport(result: AnalysisResult): string {
     { key: 'rugPull' as const, icon: '💣' },
     { key: 'fakeVolume' as const, icon: '📊' },
     { key: 'suspiciousWallet' as const, icon: '👤' },
+    { key: 'lpHealth' as const, icon: '🔗' },
+    { key: 'clusterRisk' as const, icon: '🕸️' },
   ];
 
   for (const cat of categories) {
@@ -57,6 +59,26 @@ function generateTextReport(result: AnalysisResult): string {
     lines.push(`  Balance: ${result.walletInfo.balanceSOL.toFixed(4)} SOL`);
     lines.push(`  Token Holdings: ${result.walletInfo.tokenCount}`);
     lines.push(`  Recent Txs: ${result.walletInfo.transactionCount}`);
+    lines.push('');
+  }
+
+  // ML Analysis
+  if (result.mlInsight?.modelAvailable) {
+    lines.push('🤖 ML ANALYSIS');
+    lines.push(`  Scam Probability: ${result.mlInsight.scamProbability}%`);
+    lines.push(`  Anomaly Score: ${result.mlInsight.anomalyScore}%`);
+    lines.push(`  Model Confidence: ${Math.round(result.mlInsight.confidence * 100)}%`);
+    if (result.mlInsight.topFeatures.length > 0) {
+      lines.push('  Top Factors:');
+      for (const f of result.mlInsight.topFeatures) {
+        lines.push(`    • ${f.name}: ${f.contribution}%`);
+      }
+    }
+    lines.push('');
+  }
+
+  if (result.confidence !== undefined) {
+    lines.push(`📊 Data Quality: ${Math.round(result.confidence * 100)}%`);
     lines.push('');
   }
 

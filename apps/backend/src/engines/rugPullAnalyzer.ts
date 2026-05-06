@@ -129,17 +129,6 @@ export function analyzeRugPull(input: RugPullInput): CategoryScore {
     });
   }
 
-  // ── High failure rate ────────────────────────────────────────
-  const failedTxs = signatures.filter((s) => s.err).length;
-  if (signatures.length > 5 && failedTxs / signatures.length > 0.3) {
-    score += 10;
-    signals.push({
-      label: 'High transaction failure rate',
-      severity: 'medium',
-      value: `${failedTxs}/${signatures.length} failed (${((failedTxs / signatures.length) * 100).toFixed(0)}%)`,
-    });
-  }
-
   score = Math.min(100, Math.max(0, score));
 
   return {

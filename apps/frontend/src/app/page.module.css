@@ -450,3 +450,45 @@
   color: var(--color-accent-secondary);
 }
 
+/* ── Confidence Row ──────────────────────────────────────────── */
+
+.confidenceRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  margin-bottom: 8px;
+}
+
+.confidenceLabel {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.confidenceBar {
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.confidenceFill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-secondary));
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.confidenceValue {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  width: 35px;
+  text-align: right;
+  font-family: 'Inter', monospace;
+}

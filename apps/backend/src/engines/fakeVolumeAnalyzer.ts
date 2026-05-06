@@ -161,17 +161,6 @@ export function analyzeFakeVolume(input: FakeVolumeInput): CategoryScore {
     }
   }
 
-  // ── Failure rate in context of volume ─────────────────────────
-  const failedTxs = signatures.filter((s) => s.err).length;
-  if (failedTxs > 5 && failedTxs / signatures.length > 0.2) {
-    score += 15;
-    signals.push({
-      label: 'High failure rate suggests automated retry patterns',
-      severity: 'medium',
-      value: `${failedTxs}/${signatures.length} failed`,
-    });
-  }
-
   score = Math.min(100, Math.max(0, score));
 
   return {

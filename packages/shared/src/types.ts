@@ -33,6 +33,15 @@ export interface WalletInfo {
   knownName?: string;
 }
 
+export interface MLInsight {
+  anomalyScore: number;       // 0–100 from autoencoder
+  scamProbability: number;    // 0–100 from classifier
+  combinedScore: number;      // weighted blend
+  confidence: number;         // 0–1 model decisiveness
+  topFeatures: { name: string; contribution: number }[];
+  modelAvailable: boolean;
+}
+
 export interface AnalysisResult {
   address: string;
   mode: AnalysisMode;
@@ -43,7 +52,11 @@ export interface AnalysisResult {
     rugPull: CategoryScore;
     fakeVolume: CategoryScore;
     suspiciousWallet: CategoryScore;
+    lpHealth: CategoryScore;
+    clusterRisk: CategoryScore;
   };
+  mlInsight: MLInsight;
+  confidence: number;
   tokenInfo?: TokenInfo;
   walletInfo?: WalletInfo;
   analyzedAt: string;

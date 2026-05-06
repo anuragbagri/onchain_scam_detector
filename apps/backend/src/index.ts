@@ -6,6 +6,7 @@ import cors from 'cors';
 import analyzeRouter from './routes/analyze';
 import { errorHandler } from './middleware/errorHandler';
 import { checkConnection } from './services/solana';
+import { initML, isMLReady } from './ml/mlScorer';
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -20,6 +21,7 @@ app.get('/health', async (_req, res) => {
   res.json({
     status: solanaOk ? 'ok' : 'degraded',
     solana: solanaOk ? 'connected' : 'unreachable',
+    ml: isMLReady() ? 'loaded' : 'unavailable',
     timestamp: new Date().toISOString(),
   });
 });
@@ -30,8 +32,12 @@ app.use('/api', analyzeRouter);
 app.use(errorHandler);
 
 // Start server
-app.listen(port, () => {
+app.listen(port, async () => {
   console.log(`\n🛡️  Scam Detector Backend running at http://localhost:${port}`);
   console.log(`   Health: http://localhost:${port}/health`);
-  console.log(`   Analyze: POST http://localhost:${port}/api/analyze\n`);
+  console.log(`   Analyze: POST http://localhost:${port}/api/analyze`);
+
+  // Initialize ML models
+  const mlReady = await initML();
+  console.log(`   ML Engine: ${mlReady ? '✅ Models loaded' : '⚠️  Models not found (run: npm run train)'}\n`);
 });

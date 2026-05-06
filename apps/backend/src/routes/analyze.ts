@@ -11,6 +11,7 @@ import {
 } from '../services/dataFetcher';
 import { computeRiskScore } from '../engines/riskScorer';
 import { getCached, setCache } from '../utils/cache';
+import { fetchLPPoolInfo } from '../engines/lpHealthAnalyzer';
 import {
   getKnownAddress,
   isKnownHighActivity,
@@ -23,7 +24,7 @@ const router = Router();
 /**
  * POST /api/analyze
  * Body: { address: string, mode?: 'wallet' | 'token' | 'auto' }
- * Returns: AnalysisResult
+ * Returns: AnalysisResult (V2 with ML + LP + Cluster)
  */
 router.post(
   '/analyze',
@@ -82,15 +83,23 @@ router.post(
       console.log(`[Analyze] Estimating wallet age...`);
       walletData.estimatedAgeHours = await estimateWalletAge(address, signatures);
 
-      // 5. Compute risk score
-      console.log(`[Analyze] Computing risk score...`);
-      const result = computeRiskScore({
+      // 5. Fetch LP pool info (for tokens — uses Raydium API, no RPC cost)
+      console.log(`[Analyze] Checking LP pool status...`);
+      const lpInfo = mode === 'token'
+        ? await fetchLPPoolInfo(address)
+        : { hasPool: false, isLocked: false, isBurned: false };
+      console.log(`[Analyze] LP: ${lpInfo.hasPool ? 'Pool found' : 'No pool'}, locked: ${lpInfo.isLocked}`);
+
+      // 6. Compute risk score (heuristic + ML ensemble)
+      console.log(`[Analyze] Computing risk score (heuristic + ML)...`);
+      const result = await computeRiskScore({
         address,
         mode,
         signatures,
         tokenMetadata,
         topHolders,
         walletData,
+        lpInfo,
         knownAddress: knownAddr,
         isKnownHighActivity: isHighActivity,
       });
@@ -100,11 +109,10 @@ router.post(
         ? solscanTokenUrl(address)
         : solscanAccountUrl(address);
 
-      // Inject explorer URLs into signals that reference specific transactions
+      // Inject explorer URLs into signals
       for (const catKey of Object.keys(result.categories) as Array<keyof typeof result.categories>) {
         for (const signal of result.categories[catKey].signals) {
           if (!signal.explorerUrl) {
-            // Default: link to the account/token page on Solscan
             signal.explorerUrl = explorerBaseUrl;
           }
         }
@@ -114,8 +122,11 @@ router.post(
       setCache(address, result);
 
       const elapsed = Date.now() - startTime;
+      const mlStatus = result.mlInsight.modelAvailable
+        ? `ML: ${result.mlInsight.scamProbability}%`
+        : 'ML: unavailable';
       console.log(
-        `[Analyze] Complete in ${elapsed}ms — Score: ${result.overallScore}/100 (${result.overallLevel})`
+        `[Analyze] Complete in ${elapsed}ms — Score: ${result.overallScore}/100 (${result.overallLevel}) | ${mlStatus} | Confidence: ${(result.confidence * 100).toFixed(0)}%`
       );
 
       res.json(result);
@@ -126,4 +137,3 @@ router.post(
 );
 
 export default router;
-
