@@ -1,0 +1,24 @@
+# Render Blueprint — Backend deployment
+# Deploy: render.com → New Blueprint → Connect this repo
+
+services:
+  - type: web
+    name: scam-detector-api
+    runtime: node
+    plan: free
+    rootDir: .
+    buildCommand: |
+      npm install -g pnpm &&
+      pnpm install &&
+      cd apps/backend &&
+      pnpm run train &&
+      pnpm run build
+    startCommand: cd apps/backend && pnpm start
+    healthCheckPath: /health
+    envVars:
+      - key: SOLANA_RPC_URL
+        sync: false  # Set manually in Render dashboard
+      - key: PORT
+        value: 3001
+      - key: NODE_ENV
+        value: production

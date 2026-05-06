@@ -11,7 +11,13 @@ import { FEATURE_DIM } from './featureExtractor';
 import * as fs from 'fs';
 import * as path from 'path';
 
-const MODELS_DIR = path.join(__dirname, '../../models');
+// In dev: cwd = apps/backend, models at ./models
+// In prod: cwd = apps/backend (or project root), we check both
+const MODELS_DIR = fs.existsSync(path.join(process.cwd(), 'models'))
+  ? path.join(process.cwd(), 'models')
+  : fs.existsSync(path.join(process.cwd(), 'apps/backend/models'))
+    ? path.join(process.cwd(), 'apps/backend/models')
+    : path.join(__dirname, '../../models');
 
 /**
  * Create the autoencoder model.
