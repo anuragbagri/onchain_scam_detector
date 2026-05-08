@@ -11,13 +11,22 @@ import { FEATURE_DIM } from './featureExtractor';
 import * as fs from 'fs';
 import * as path from 'path';
 
-// In dev: cwd = apps/backend, models at ./models
-// In prod: cwd = apps/backend (or project root), we check both
-const MODELS_DIR = fs.existsSync(path.join(process.cwd(), 'models'))
-  ? path.join(process.cwd(), 'models')
-  : fs.existsSync(path.join(process.cwd(), 'apps/backend/models'))
-    ? path.join(process.cwd(), 'apps/backend/models')
-    : path.join(__dirname, '../../models');
+// Resolve models directory — works in dev, production, and Vercel serverless
+function resolveModelsDir(): string {
+  const candidates = [
+    path.join(process.cwd(), 'models'),                    // dev: cwd = apps/backend
+    path.join(process.cwd(), 'apps/backend/models'),       // prod: cwd = project root
+    path.join(__dirname, '../../models'),                   // relative to compiled src/ml/
+    path.join(__dirname, '../../../models'),                 // Vercel: deeper nesting
+    path.join(__dirname, '../../../../apps/backend/models'),// Vercel: from dist
+  ];
+  for (const dir of candidates) {
+    if (fs.existsSync(dir)) return dir;
+  }
+  console.warn('[ML] Models directory not found in any candidate path');
+  return candidates[0]; // fallback
+}
+const MODELS_DIR = resolveModelsDir();
 
 /**
  * Create the autoencoder model.
